@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/titoyudha/Go_Gin_RestAPI/entity"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -24,7 +25,7 @@ func ConnectDB() *gorm.DB {
 	if err != nil {
 		panic(err)
 	}
-	// db.AutoMigrate()
+	db.AutoMigrate(&entity.Book{}, &entity.User{})
 
 	return db
 }

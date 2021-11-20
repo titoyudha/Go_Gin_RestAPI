@@ -13,7 +13,7 @@ import (
 )
 
 type UserController interface {
-	Update(ctx gin.Context)
+	Update(ctx *gin.Context)
 	Profile(ctx *gin.Context)
 }
 
@@ -30,7 +30,7 @@ func NewUserController(userService service.UserService, jwtService service.JWTSe
 	}
 }
 
-func (c *userController) Update(ctx gin.Context) {
+func (c *userController) Update(ctx *gin.Context) {
 	var userUpdateDTO dto.UserUpdateDTO
 	errDTO := ctx.ShouldBind(&userUpdateDTO)
 	if errDTO != nil {
@@ -54,7 +54,7 @@ func (c *userController) Update(ctx gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-func (c *userController) Profile(ctx gin.Context) {
+func (c *userController) Profile(ctx *gin.Context) {
 	authHeader := ctx.GetHeader("Authorization")
 	token, err := c.jwtService.ValidateToken(authHeader)
 	if err != nil {

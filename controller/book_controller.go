@@ -35,7 +35,7 @@ func NewBookController(bookServ service.BookService, jwtServ service.JWTService)
 
 //Get All Book
 func (c *bookController) GetAll(ctx *gin.Context) {
-	var books []entity.Book = c.bookService.GetAll()
+	var books []entity.Book = c.bookService.All()
 	res := helper.BuildResponse(true, "OK", books)
 	ctx.JSON(http.StatusOK, res)
 
@@ -48,7 +48,7 @@ func (c *bookController) FindById(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, res)
 		return
 	}
-	var book entity.Book = c.bookService.FindById(id)
+	var book entity.Book = c.bookService.FindByID(id)
 	if (book == entity.Book{}) {
 		res := helper.BuildErrorResponse("Data not found", "No Specific data with given id", helper.EmptyObj{})
 		ctx.JSON(http.StatusNotFound, res)
@@ -138,5 +138,6 @@ func (c *bookController) getUserIDbyToken(token string) string {
 		panic(err.Error())
 	}
 	claims := aToken.Claims.(jwt.MapClaims)
-	return fmt.Sprintf("%v", claims["user_id"])
+	id := fmt.Sprintf("%v", claims["user_id"])
+	return id
 }
